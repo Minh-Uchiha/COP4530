@@ -130,7 +130,7 @@ bool isValidString(std::string s) {
 
 // Function to check whether a string is valid (have equal number of opening and closing parentheses) or not using the standard library stack
 bool isValidStringStl(std::string s) {
-    std::stack<int> st;
+    std::stack<char> st;
     for (char c : s) {
         if (c == '(' || c == '[' || c == '{') st.push(c);
         else if (c == ')' || c == ']' || c == '}') {

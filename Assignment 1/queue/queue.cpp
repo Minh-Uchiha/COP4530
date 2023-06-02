@@ -1,5 +1,7 @@
 #include <iostream>
 #include <cstdlib>
+#include <chrono>
+#include <queue>
 
 #define CAPACITY 10000
 
@@ -59,28 +61,175 @@ public:
 
 };
 
+
+
 int main() {
 
     Queue q = Queue();
+    std::queue<int> stlQ;
 
     // Let's try some test cases
     std::cout << std::boolalpha;
+
+    std::cout << "Push 5 to queue:\n";
+    auto start = std::chrono::steady_clock ::now();
     q.push(5);
+    auto stop = std::chrono::steady_clock ::now();
+    std::cout << "\tUsing my own queue: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << " ms\n";
+    start = std::chrono::steady_clock ::now();
+    stlQ.push(5);
+    stop = std::chrono::steady_clock ::now();
+    std::cout << "\tUsing the stl's queue: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << " ms\n";
+
+    std::cout << "Push 8 to queue:\n";
+    start = std::chrono::steady_clock ::now();
     q.push(8);
+    stop = std::chrono::steady_clock ::now();
+    std::cout << "\tUsing my own queue: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << " ms\n";
+    start = std::chrono::steady_clock ::now();
+    stlQ.push(8);
+    stop = std::chrono::steady_clock ::now();
+    std::cout << "\tUsing the stl's queue: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << " ms\n";
+
+    std::cout << "Push 4 to queue:\n";
+    start = std::chrono::steady_clock ::now();
     q.push(4);
-    q.push(2);
-    std::cout << q.front() << "\n";
+    stop = std::chrono::steady_clock ::now();
+    std::cout << "\tUsing my own queue: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << " ms\n";
+    start = std::chrono::steady_clock ::now();
+    stlQ.push(4);
+    stop = std::chrono::steady_clock ::now();
+    std::cout << "\tUsing the stl's queue: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << " ms\n";
+
+//    std::cout << "Push 2 to queue:\n";
+//    start = std::chrono::steady_clock ::now();
+//    q.push(2);
+//    stop = std::chrono::steady_clock ::now();
+//    std::cout << "\tUsing my own queue: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << " ms\n";
+//    start = std::chrono::steady_clock ::now();
+//    stlQ.push(2);
+//    stop = std::chrono::steady_clock ::now();
+//    std::cout << "\tUsing the stl's queue: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << " ms\n";
+//
+//    std::cout << "Print queue's front:\n";
+//    start = std::chrono::steady_clock ::now();
+//    std::cout << q.front() << "\n";
+//    stop = std::chrono::steady_clock ::now();
+//    std::cout << "\tUsing my own queue: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << " ms\n";
+//    start = std::chrono::steady_clock ::now();
+//    std::cout << stlQ.front() << "\n";
+//    stop = std::chrono::steady_clock ::now();
+//    std::cout << "\tUsing the stl's queue: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << " ms\n";
+//
+    std::cout << "Pop queue's front:\n";
+    start = std::chrono::steady_clock ::now();
     q.pop();
-    std::cout << q.front() << "\n";
-    q.pop();
-    std::cout << q.front() << "\n";
-    q.pop();
-    std::cout << q.front() << "\n";
-    std::cout << q.back() << "\n";
+    stop = std::chrono::steady_clock ::now();
+    std::cout << "\tUsing my own queue: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << " ms\n";
+    start = std::chrono::steady_clock ::now();
+    stlQ.pop();
+    stop = std::chrono::steady_clock ::now();
+    std::cout << "\tUsing the stl's queue: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << " ms\n";
+//
+//    std::cout << "Print queue's front:\n";
+//    start = std::chrono::steady_clock ::now();
+//    std::cout << q.front() << "\n";
+//    stop = std::chrono::steady_clock ::now();
+//    std::cout << "\tUsing my own queue: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << " ms\n";
+//    start = std::chrono::steady_clock ::now();
+//    std::cout << stlQ.front() << "\n";
+//    stop = std::chrono::steady_clock ::now();
+//    std::cout << "\tUsing the stl's queue: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << " ms\n";
+//
+//    std::cout << "Pop queue's front:\n";
+//    start = std::chrono::steady_clock ::now();
+//    q.pop();
+//    stop = std::chrono::steady_clock ::now();
+//    std::cout << "\tUsing my own queue: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << " ms\n";
+//    start = std::chrono::steady_clock ::now();
+//    stlQ.pop();
+//    stop = std::chrono::steady_clock ::now();
+//    std::cout << "\tUsing the stl's queue: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << " ms\n";
+//
+//    std::cout << "Print queue's front:\n";
+//    start = std::chrono::steady_clock ::now();
+//    std::cout << q.front() << "\n";
+//    stop = std::chrono::steady_clock ::now();
+//    std::cout << "\tUsing my own queue: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << " ms\n";
+//    start = std::chrono::steady_clock ::now();
+//    std::cout << stlQ.front() << "\n";
+//    stop = std::chrono::steady_clock ::now();
+//    std::cout << "\tUsing the stl's queue: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << " ms\n";
+//
+//    std::cout << "Pop queue's front:\n";
+//    start = std::chrono::steady_clock ::now();
+//    q.pop();
+//    stop = std::chrono::steady_clock ::now();
+//    std::cout << "\tUsing my own queue: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << " ms\n";
+//    start = std::chrono::steady_clock ::now();
+//    stlQ.pop();
+//    stop = std::chrono::steady_clock ::now();
+//    std::cout << "\tUsing the stl's queue: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << " ms\n";
+//
+//    std::cout << "Print queue's front:\n";
+//    start = std::chrono::steady_clock ::now();
+//    std::cout << q.front() << "\n";
+//    stop = std::chrono::steady_clock ::now();
+//    std::cout << "\tUsing my own queue: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << " ms\n";
+//    start = std::chrono::steady_clock ::now();
+//    std::cout << stlQ.front() << "\n";
+//    stop = std::chrono::steady_clock ::now();
+//    std::cout << "\tUsing the stl's queue: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << " ms\n";
+//
+//    std::cout << "Print queue's back:\n";
+//    start = std::chrono::steady_clock ::now();
+//    std::cout << q.back() << "\n";
+//    stop = std::chrono::steady_clock ::now();
+//    std::cout << "\tUsing my own queue: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << " ms\n";
+//    start = std::chrono::steady_clock ::now();
+//    std::cout << stlQ.back() << "\n";
+//    stop = std::chrono::steady_clock ::now();
+//    std::cout << "\tUsing the stl's queue: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << " ms\n";
+//
+    std::cout << "Check if queue is empty:\n";
+    start = std::chrono::steady_clock ::now();
     std::cout << q.empty() << "\n";
-    q.pop();
-    std::cout << q.empty() << "\n";
+    stop = std::chrono::steady_clock ::now();
+    std::cout << "\tUsing my own queue: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << " ms\n";
+    start = std::chrono::steady_clock ::now();
+    std::cout << stlQ.empty() << "\n";
+    stop = std::chrono::steady_clock ::now();
+    std::cout << "\tUsing the stl's queue: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << " ms\n";
+//
+//    std::cout << "Pop queue's front:\n";
+//    start = std::chrono::steady_clock ::now();
+//    q.pop();
+//    stop = std::chrono::steady_clock ::now();
+//    std::cout << "\tUsing my own queue: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << " ms\n";
+//    start = std::chrono::steady_clock ::now();
+//    stlQ.pop();
+//    stop = std::chrono::steady_clock ::now();
+//    std::cout << "\tUsing the stl's queue: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << " ms\n";
+//
+//    std::cout << "Check if queue is qmpty:\n";
+//    start = std::chrono::steady_clock ::now();
+//    std::cout << q.empty() << "\n";
+//    stop = std::chrono::steady_clock ::now();
+//    std::cout << "\tUsing my own queue: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << " ms\n";
+//    start = std::chrono::steady_clock ::now();
+//    std::cout << stlQ.empty() << "\n";
+//    stop = std::chrono::steady_clock ::now();
+//    std::cout << "\tUsing the stl's queue: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << " ms\n";
+
+    std::cout << "Print queue's size:\n";
+    start = std::chrono::steady_clock ::now();
     std::cout << q.size() << "\n";
+    stop = std::chrono::steady_clock ::now();
+    std::cout << "\tUsing my own queue: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << " ms\n";
+    start = std::chrono::steady_clock ::now();
+    std::cout << stlQ.size() << "\n";
+    stop = std::chrono::steady_clock ::now();
+    std::cout << "\tUsing the stl's queue: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << " ms\n";
 
     return 0;
 
