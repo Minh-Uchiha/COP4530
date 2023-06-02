@@ -160,15 +160,15 @@ int no = 1;
 // Function to compare runtime
 void compare_runtime(std::string s) {
 
-    std::cout << "Test case #1: " << s << "\n";
+    std::cout << "Test case: " << s << "\n";
     auto start = std::chrono::steady_clock ::now();
     isValidString(s);
     auto stop = std::chrono::steady_clock ::now();
-    std::cout << "\tUsing my own stack: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << "\n";
+    std::cout << "\tUsing my own stack: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << " ms\n";
     start = std::chrono::steady_clock ::now();
     isValidStringStl(s);
     stop = std::chrono::steady_clock ::now();
-    std::cout << "\tUsing standard library's stack: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << "\n";
+    std::cout << "\tUsing standard library's stack: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << " ms\n";
 
 }
 
