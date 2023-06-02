@@ -1,5 +1,7 @@
 #include <iostream>
 #include <cstdlib>
+#include <stack>
+#include <chrono>
 
 class Node {
 public:
@@ -66,29 +68,22 @@ public:
 };
 
 class Stack {
-private:
-    // This is only a helper method
-    bool cleanAndReturnFalseHelper() {
-        clean();
-        return false;
-    }
-
 public:
     LinkedList l;
-    int size;
+    int sz;
 
-    Stack() : size(0), l(LinkedList()) {}
+    Stack() : sz(0), l(LinkedList()) {}
 
     // Method to push a character to the stack
     void push(char c) {
         l.append(c);
-        ++ size;
+        ++ sz;
     }
 
     // Method the pop a character out of the stack
     void pop() {
         l.removeEnd();
-        -- size;
+        -- sz;
     }
 
     // Do nothing
@@ -100,56 +95,127 @@ public:
         return l.getEnd();
     }
 
-    // Method to remove every characters of the stack
-    void clean() {
-        l.clean();
-        size = 0;
-    }
-
-    // Method to check whether a string is valid (have equal number of opening and closing parentheses) or not
-    bool isValidString(std::string s) {
-        for (char c : s) {
-            if (c == '(' || c == '[' || c == '{') push(c);
-            else if (c == ')' || c == ']' || c == '}') {
-                if (size == 0) return cleanAndReturnFalseHelper();
-                char topChar = top();
-                switch(topChar) {
-                case '(':
-                    if (c == '}' || c == ']') return cleanAndReturnFalseHelper();
-                    break;
-                case '[':
-                    if (c == '}' || c == ')') return cleanAndReturnFalseHelper();
-                    break;
-                case '{':
-                    if (c == ')' || c == ']') return cleanAndReturnFalseHelper();
-                    break;
-                }
-                pop();
-            }
-        }
-        int tmp = size;
-        clean();
-        return (tmp == 0);
+    // Get the size of the stack
+    int size() {
+        return sz;
     }
 
 };
 
+// Function to check whether a string is valid (have equal number of opening and closing parentheses) or not using my own stack
+bool isValidString(std::string s) {
+    Stack st = Stack();
+    for (char c : s) {
+        if (c == '(' || c == '[' || c == '{') st.push(c);
+        else if (c == ')' || c == ']' || c == '}') {
+            if (st.size() == 0) return false;
+            char topChar = st.top();
+            switch(topChar) {
+            case '(':
+                if (c == '}' || c == ']') return false;
+                break;
+            case '[':
+                if (c == '}' || c == ')') return false;
+                break;
+            case '{':
+                if (c == ')' || c == ']') return false;
+                break;
+            }
+            st.pop();
+        }
+    }
+    int tmp = st.size();
+    return (tmp == 0);
+}
+
+// Function to check whether a string is valid (have equal number of opening and closing parentheses) or not using the standard library stack
+bool isValidStringStl(std::string s) {
+    std::stack<int> st;
+    for (char c : s) {
+        if (c == '(' || c == '[' || c == '{') st.push(c);
+        else if (c == ')' || c == ']' || c == '}') {
+            if (st.size() == 0) return false;
+            char topChar = st.top();
+            switch(topChar) {
+            case '(':
+                if (c == '}' || c == ']') return false;
+                break;
+            case '[':
+                if (c == '}' || c == ')') return false;
+                break;
+            case '{':
+                if (c == ')' || c == ']') return false;
+                break;
+            }
+            st.pop();
+        }
+    }
+    int tmp = st.size();
+    return (tmp == 0);
+}
+
+// Number of function calls to compare_runtime
+int no = 1;
+
+// Function to compare runtime
+void compare_runtime(std::string s) {
+
+    std::cout << "Test case #1: " << s << "\n";
+    auto start = std::chrono::steady_clock ::now();
+    isValidString(s);
+    auto stop = std::chrono::steady_clock ::now();
+    std::cout << "\tUsing my own stack: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << "\n";
+    start = std::chrono::steady_clock ::now();
+    isValidStringStl(s);
+    stop = std::chrono::steady_clock ::now();
+    std::cout << "\tUsing standard library's stack: " << std::chrono::duration_cast<std::chrono::duration<double>>(stop - start).count() << "\n";
+
+}
+
 int main() {
 
-    Stack st = Stack();
+    // Compare runtime
+    compare_runtime("{{{{}}}[][]((())");
+    compare_runtime("(%TT{>><]]]%%%%%%)");
+    compare_runtime("(((((()))))){}{}{}[][][][[[]]]");
+    compare_runtime("{{{@23+6767}}}*<45>(a+b)[]");
+    compare_runtime("(((((a+b %%%%%####3422222222222)))))[]{}[]");
+    compare_runtime("[[[{{()}}]]]");
+    compare_runtime("((((((}}}}}}");
+    compare_runtime("Aaaaaaaa+bbbb({}{}{}[][][]tttttt + %^$)");
+    compare_runtime("@@@@@@@@@@@@@@@@@@@@@@@$$%%T$%$%$$%{}()%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+    compare_runtime("@@@@@@@@@@@@@@@@@@@@@@@$$%%%%%%%####3422222222222))))");
+    compare_runtime("{{{{}}}[][sdfsdg3345{[[[[]}]((())");
+    compare_runtime("34235]]]}})_{{sa{{}}}[][]((())");
+    compare_runtime("{{dsafaswwwwwwwwwwwwwwwwwwwwwwwwwwwwww{{}}}[][]((***)())");
+    compare_runtime("(((((()))))){[[]]{}}{}{}[][][][[[]]]");
+    compare_runtime("{{{{}}}[355----++++][]((())");
 
-    // Try some test cases
-    std::cout << std::boolalpha;
-    std::cout << st.isValidString("{{{{}}}[][]((())") << "\n";
-    std::cout << st.isValidString("(%TT{>><]]]%%%%%%)") << "\n";
-    std::cout << st.isValidString("(((((()))))){}{}{}[][][][[[]]]") << "\n";
-    std::cout << st.isValidString("{{{@23+6767}}}*<45>(a+b)[]") << "\n";
-    std::cout << st.isValidString("(a+b)") << "\n";
-    std::cout << st.isValidString("(((((a+b %%%%%####3422222222222)))))[]{}[]") << "\n";
-    std::cout << st.isValidString("[[[{{()}}]]]") << "\n";
-    std::cout << st.isValidString("((((((}}}}}}") << "\n";
-    std::cout << st.isValidString("Aaaaaaaa+bbbb({}{}{}[][][]tttttt + %^$)") << "\n";
-    std::cout << st.isValidString("@@@@@@@@@@@@@@@@@@@@@@@$$%%T$%$%$$%{}()%%%%%%%%%%%%%%%%%%%%%%%%%%%%") << "\n";
+
+    // Uncomment the below code the try some test cases
+//    std::cout << std::boolalpha;
+//    std::cout << isValidString("(%TT{>><]]]%%%%%%)") << "\n";
+//    std::cout << isValidString("(((((()))))){}{}{}[][][][[[]]]") << "\n";
+//    std::cout << isValidString("{{{@23+6767}}}*<45>(a+b)[]") << "\n";
+//    std::cout << isValidString("(a+b)") << "\n";
+//    std::cout << isValidString("(((((a+b %%%%%####3422222222222)))))[]{}[]") << "\n";
+//    std::cout << isValidString("[[[{{()}}]]]") << "\n";
+//    std::cout << isValidString("((((((}}}}}}") << "\n";
+//    std::cout << isValidString("Aaaaaaaa+bbbb({}{}{}[][][]tttttt + %^$)") << "\n";
+//    std::cout << isValidString("@@@@@@@@@@@@@@@@@@@@@@@$$%%T$%$%$$%{}()%%%%%%%%%%%%%%%%%%%%%%%%%%%%") << "\n";
+//
+//    std::cout << isValidStringStl("{{{{}}}[][]((())") << "\n";
+//    std::cout << isValidStringStl("(%TT{>><]]]%%%%%%)") << "\n";
+//    std::cout << isValidStringStl("(((((()))))){}{}{}[][][][[[]]]") << "\n";
+//    std::cout << isValidStringStl("{{{@23+6767}}}*<45>(a+b)[]") << "\n";
+//    std::cout << isValidStringStl("(a+b)") << "\n";
+//    std::cout << isValidStringStl("(((((a+b %%%%%####3422222222222)))))[]{}[]") << "\n";
+//    std::cout << isValidStringStl("[[[{{()}}]]]") << "\n";
+//    std::cout << isValidStringStl("((((((}}}}}}") << "\n";
+//    std::cout << isValidStringStl("Aaaaaaaa+bbbb({}{}{}[][][]tttttt + %^$)") << "\n";
+//    std::cout << isValidStringStl("@@@@@@@@@@@@@@@@@@@@@@@$$%%T$%$%$$%{}()%%%%%%%%%%%%%%%%%%%%%%%%%%%%") << "\n";
+
+
     return 0;
 
 }
