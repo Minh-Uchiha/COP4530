@@ -1,0 +1,3 @@
+(4ac + 9b + 3E) + d / 5 + 9 / 2 + (1)a
+
+Write the expression tree and post order traversal:
